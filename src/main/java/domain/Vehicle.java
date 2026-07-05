@@ -44,4 +44,11 @@ public class Vehicle {
     public void setStatus(VehicleStatus status) {
         this.status = status;
     }
+    
+    public boolean isAvailable() {
+        return this.status == VehicleStatus.AVAILABLE;
+    }
+    public boolean validateForRental() {
+        return true;
+    }
 }

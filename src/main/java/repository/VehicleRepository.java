@@ -38,7 +38,7 @@ public class VehicleRepository {
     public List<Vehicle> findAvailable() {
         List<Vehicle> result = new ArrayList<>();
         for (Vehicle v : vehicles) {
-            if (v.getStatus() != null && v.getStatus().toString().equals("AVAILABLE")) {
+            if (v.isAvailable()) {
                 result.add(v);
             }
         }
