@@ -2,6 +2,7 @@ package presentation;
 
 import java.time.LocalDate;
 
+import domain.Car;
 import domain.Customer;
 import domain.Rental;
 import domain.Vehicle;
@@ -16,6 +17,7 @@ import service.SMSNotification;
 
 public class Main {
 
+
     public static void main(String[] args) {
 
         VehicleRepository vehicleRepository = new VehicleRepository();
@@ -29,7 +31,7 @@ public class Main {
         rentalService.addObserver(emailObserver);
         rentalService.addObserver(smsObserver);
 
-        Vehicle vehicle = new Vehicle(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE);
+        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, "ABC-1234", 2022, "White", "petrol","Automatic");
         vehicleRepository.save(vehicle);
 
         Customer customer = new Customer(1, "Thekra", "0599999999", "DL123", 22);

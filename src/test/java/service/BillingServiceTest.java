@@ -3,6 +3,7 @@ package service;
 import org.junit.jupiter.api.Test;
 import strategy.PricingStrategy;
 import strategy.CarPricingStrategy;
+import domain.Car;
 import domain.Customer;
 import domain.Rental;
 import domain.Vehicle;
@@ -23,14 +24,7 @@ class BillingServiceTest {
 
 
         Vehicle vehicle =
-                new Vehicle(
-                        1,
-                        "Toyota",
-                        "Corolla",
-                        50.0,
-                        VehicleStatus.RENTED
-                );
-
+                new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, "ABC-1234", 2022, "White", "petrol","Automatic");
 
         Customer customer =
                 new Customer(
@@ -74,14 +68,7 @@ class BillingServiceTest {
 
 
         Vehicle vehicle =
-                new Vehicle(
-                        1,
-                        "Toyota",
-                        "Corolla",
-                        50.0,
-                        VehicleStatus.RENTED
-                );
-
+                new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED, "ABC-1234", 2022, "White", "petrol","Automatic");
 
         Customer customer =
                 new Customer(

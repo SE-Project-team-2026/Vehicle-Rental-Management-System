@@ -2,7 +2,7 @@ package domain;
 
 import enums.VehicleStatus;
 
-public class Vehicle {
+public abstract class Vehicle {
 
     private int id;
     private String brand;
@@ -51,4 +51,7 @@ public class Vehicle {
     public boolean validateForRental() {
         return true;
     }
+    
+    public abstract String getVehicleType();
+
 }

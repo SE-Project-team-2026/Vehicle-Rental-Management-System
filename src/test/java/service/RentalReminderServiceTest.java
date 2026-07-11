@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import domain.Car;
 import domain.Customer;
 import domain.Rental;
 import domain.Vehicle;
@@ -47,7 +48,7 @@ class RentalReminderServiceTest {
 		LocalDate today = LocalDate.now();
 		LocalDate tomorrow = today.plusDays(1);
 		
-		   Vehicle vehicle = new Vehicle(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED);
+		   Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED, "ABC-1234", 2022, "White", "petrol","Automatic");
 	        Customer customer = new Customer(1, "Ali", "123", "DL1", 25);
 	        Rental activeRental = new Rental(1, customer, vehicle, today.minusDays(2), tomorrow);
 	        
@@ -65,7 +66,7 @@ class RentalReminderServiceTest {
 	 LocalDate today = LocalDate.now();
 	 LocalDate dayAfterTomorrow = today.plusDays(10);
 	 
-	 Vehicle vehicle = new Vehicle(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED);
+	 Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED, "ABC-1234", 2022, "White", "petrol","Automatic");
 	 Customer customer = new Customer(1, "Ali", "123", "DL1", 25);
 	 Rental activeRental = new Rental(1, customer, vehicle, today.minusDays(2), dayAfterTomorrow);
 	 

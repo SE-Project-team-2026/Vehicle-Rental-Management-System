@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import exception.InvalidRentalPeriodException;
+import domain.Car;
 import domain.Customer;
 import domain.Rental;
 import domain.Vehicle;
@@ -26,7 +27,7 @@ class RentalServiceTest {
                 new RentalService(rentalRepository, vehicleRepository);
 
         Vehicle vehicle =
-                new Vehicle(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE);
+                new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, "ABC-1234", 2022, "White", "petrol","Automatic");
 
         vehicleRepository.save(vehicle);
 
@@ -59,7 +60,7 @@ class RentalServiceTest {
 
 
         Vehicle vehicle =
-                new Vehicle(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE);
+                new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, "ABC-1234", 2022, "White", "petrol","Automatic");
 
         vehicleRepository.save(vehicle);
 
@@ -123,14 +124,7 @@ class RentalServiceTest {
 
 
         Vehicle vehicle =
-                new Vehicle(
-                        1,
-                        "Toyota",
-                        "Corolla",
-                        50.0,
-                        VehicleStatus.AVAILABLE
-                );
-
+                new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, "ABC-1234", 2022, "White", "petrol","Automatic");
 
         vehicleRepository.save(vehicle);
 
@@ -175,13 +169,7 @@ class RentalServiceTest {
 
 
         Vehicle vehicle =
-                new Vehicle(
-                        1,
-                        "Toyota",
-                        "Corolla",
-                        50.0,
-                        VehicleStatus.AVAILABLE
-                );
+                new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, "ABC-1234", 2022, "White", "petrol","Automatic");
 
         vehicleRepository.save(vehicle);
 
@@ -215,7 +203,7 @@ class RentalServiceTest {
         RentalService rentalService =
                 new RentalService(rentalRepository,vehicleRepository);
 
-        Vehicle vehicle =new Vehicle(1,"Toyota","Corolla",50.0,VehicleStatus.AVAILABLE);
+        Vehicle vehicle =new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, "ABC-1234", 2022, "White", "petrol","Automatic");
 
         vehicleRepository.save(vehicle);
 
