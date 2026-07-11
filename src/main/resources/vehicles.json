@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "brand": "Toyota",
+    "model": "Camry",
+    "pricePerDay": 50.0,
+    "status": "AVAILABLE"
+  },
+  {
+    "id": 2,
+    "brand": "Hyundai",
+    "model": "Elantra",
+    "pricePerDay": 40.0,
+    "status": "RENTED"
+  },
+  {
+    "id": 3,
+    "brand": "Kia",
+    "model": "Sportage",
+    "pricePerDay": 70.0,
+    "status": "AVAILABLE"
+  },
+  {
+    "id": 4,
+    "brand": "Nissan",
+    "model": "Sunny",
+    "pricePerDay": 35.0,
+    "status": "RENTED"
+  }
+]

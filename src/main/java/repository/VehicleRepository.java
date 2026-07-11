@@ -1,13 +1,27 @@
 package repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.Vehicle;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleRepository {
 
-    private List<Vehicle> vehicles = new ArrayList<>();
+    private List<Vehicle> vehicles;
+
+    public VehicleRepository() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            InputStream inputStream = getClass().getResourceAsStream("/vehicles.json");
+            this.vehicles = mapper.readValue(inputStream, new TypeReference<List<Vehicle>>() {});
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.vehicles = new ArrayList<>(); 
+        }
+    }
 
     public void save(Vehicle vehicle) {
         vehicles.add(vehicle);
