@@ -1,41 +1,40 @@
 package presentation;
 
+import java.time.LocalDate;
+
 import domain.Customer;
-import domain.Vehicle;
 import domain.Rental;
+import domain.Vehicle;
 import enums.VehicleStatus;
+import observer.NotificationObserver;
+import observer.Observer;
 import repository.RentalRepository;
 import repository.VehicleRepository;
+import service.EmailNotification;
 import service.RentalService;
-import observer.NotificationObserver;
-
-import java.time.LocalDate;
+import service.SMSNotification;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        // repositories
         VehicleRepository vehicleRepository = new VehicleRepository();
         RentalRepository rentalRepository = new RentalRepository();
+        
+        RentalService rentalService = new RentalService(rentalRepository, vehicleRepository);
 
-     // service
-        RentalService rentalService = new RentalService(
-                rentalRepository,
-                vehicleRepository
-        );
+        Observer emailObserver = new EmailNotification("customer@example.com");
+        Observer smsObserver = new SMSNotification("+1234567890");
 
-        // Observer Pattern
-        rentalService.addObserver(new NotificationObserver());
+        rentalService.addObserver(emailObserver);
+        rentalService.addObserver(smsObserver);
 
-        // create vehicle
         Vehicle vehicle = new Vehicle(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE);
         vehicleRepository.save(vehicle);
 
-        // create customer
         Customer customer = new Customer(1, "Thekra", "0599999999", "DL123", 22);
 
-        // first rental
+        System.out.println("--- Attempting First Rental ---");
         Rental rental = rentalService.rentVehicle(
                 customer,
                 vehicle,
@@ -43,12 +42,12 @@ public class Main {
                 LocalDate.now().plusDays(3)
         );
 
-        System.out.println("Rental created successfully!");
+        System.out.println("\nRental created successfully!");
         System.out.println("Customer: " + rental.getCustomer().getName());
         System.out.println("Vehicle: " + rental.getVehicle().getBrand());
         System.out.println("Status: " + rental.getVehicle().getStatus());
 
-      
+        System.out.println("\n--- Attempting Second Rental (Double Booking) ---");
         try {
             Rental rental2 = rentalService.rentVehicle(
                     customer,
@@ -56,10 +55,9 @@ public class Main {
                     LocalDate.now(),
                     LocalDate.now().plusDays(2)
             );
-
-            System.out.println("Second rental created (ERROR)");
+            System.out.println("Second rental created (ERROR - This should not happen!)");
         } catch (Exception e) {
-            System.out.println("\nDouble booking prevented successfully!");
+            System.out.println("Double booking prevented successfully!");
             System.out.println("Error: " + e.getMessage());
         }
     }
