@@ -7,6 +7,7 @@ import enums.VehicleStatus;
 import repository.RentalRepository;
 import repository.VehicleRepository;
 import service.RentalService;
+import observer.NotificationObserver;
 
 import java.time.LocalDate;
 
@@ -18,8 +19,14 @@ public class Main {
         VehicleRepository vehicleRepository = new VehicleRepository();
         RentalRepository rentalRepository = new RentalRepository();
 
-        // service
-        RentalService rentalService = new RentalService(rentalRepository, vehicleRepository);
+     // service
+        RentalService rentalService = new RentalService(
+                rentalRepository,
+                vehicleRepository
+        );
+
+        // Observer Pattern
+        rentalService.addObserver(new NotificationObserver());
 
         // create vehicle
         Vehicle vehicle = new Vehicle(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE);
@@ -41,9 +48,7 @@ public class Main {
         System.out.println("Vehicle: " + rental.getVehicle().getBrand());
         System.out.println("Status: " + rental.getVehicle().getStatus());
 
-        // =========================
-        // DOUBLE BOOKING TEST
-        // =========================
+      
         try {
             Rental rental2 = rentalService.rentVehicle(
                     customer,
