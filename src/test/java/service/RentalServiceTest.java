@@ -1,7 +1,6 @@
 package service;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import exception.InvalidRentalPeriodException;
@@ -13,13 +12,10 @@ import exception.VehicleNotAvailableException;
 import observer.Observer;
 import repository.RentalRepository;
 import repository.VehicleRepository;
-
 import java.time.LocalDate;
 
 
 class RentalServiceTest {
-
-
     @Test
     void testRentVehicleSuccessfully() {
 
@@ -199,8 +195,6 @@ class RentalServiceTest {
                         25
                 );
 
-
-        // End date before start date -> should fail
         assertThrows(InvalidRentalPeriodException.class, () -> {
 
             rentalService.rentVehicle(
@@ -212,5 +206,30 @@ class RentalServiceTest {
 
         });
     }    
+    @Test
+    void testReturnVehicleSuccessfully() {
 
+        VehicleRepository vehicleRepository = new VehicleRepository();
+        RentalRepository rentalRepository = new RentalRepository();
+
+        RentalService rentalService =
+                new RentalService(rentalRepository,vehicleRepository);
+
+        Vehicle vehicle =new Vehicle(1,"Toyota","Corolla",50.0,VehicleStatus.AVAILABLE);
+
+        vehicleRepository.save(vehicle);
+
+        Customer customer =new Customer(1,"Test User","123","DL1",25);
+
+        Rental rental = rentalService.rentVehicle(customer,vehicle,LocalDate.now(),LocalDate.now().plusDays(3));
+
+        LocalDate returnDate = LocalDate.now().plusDays(2);
+
+        rentalService.returnVehicle(rental,returnDate);
+
+        assertEquals(VehicleStatus.AVAILABLE,vehicle.getStatus());
+
+        assertFalse(rental.isActive());
+        assertEquals(returnDate,rental.getReturnDate());
+    }
 }

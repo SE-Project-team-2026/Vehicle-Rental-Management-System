@@ -100,4 +100,21 @@ public class RentalService implements Subject {
             observer.update(message);
         }
     }
+    public Rental returnVehicle(Rental rental, LocalDate returnDate) {
+
+        rental.setReturnDate(returnDate);
+
+        rental.closeRental();
+
+        Vehicle vehicle = rental.getVehicle();
+
+        vehicle.setStatus(VehicleStatus.AVAILABLE);
+
+        vehicleRepository.update(vehicle);
+
+        notifyObservers("Vehicle returned successfully: "+ vehicle.getBrand());
+
+
+        return rental;
+    }    
 }
