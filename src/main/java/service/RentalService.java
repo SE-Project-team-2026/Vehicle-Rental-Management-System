@@ -15,7 +15,9 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-
+import strategy.RentalValidationStrategy;
+import java.util.Map;
+import java.util.HashMap;
 
 public class RentalService implements Subject {
 
@@ -23,65 +25,60 @@ public class RentalService implements Subject {
     private VehicleRepository vehicleRepository;
 
     private List<Observer> observers = new ArrayList<>();
-
+    private Map<String, RentalValidationStrategy> validationStrategies;
 
     public RentalService(RentalRepository rentalRepository,
-                         VehicleRepository vehicleRepository) {
+            VehicleRepository vehicleRepository,
+            Map<String, RentalValidationStrategy> validationStrategies) {
+this.rentalRepository = rentalRepository;
+this.vehicleRepository = vehicleRepository;
+this.validationStrategies = validationStrategies;
+}
+    
+    public Rental rentVehicle(Customer customer, Vehicle vehicle, 
+            LocalDate startDate, LocalDate endDate) {
 
-        this.rentalRepository = rentalRepository;
-        this.vehicleRepository = vehicleRepository;
-    }
+// 1. التحقق من حالة المركبة
+if (vehicle.getStatus() == VehicleStatus.RENTED) {
+throw new VehicleNotAvailableException("Vehicle already rented");
+}
 
-    public Rental rentVehicle(Customer customer,
-                              Vehicle vehicle,
-                              LocalDate startDate,
-                              LocalDate endDate) {
+// 2. التحقق من التواريخ
+if (endDate.isBefore(startDate)) {
+throw new InvalidRentalPeriodException("Invalid rental period");
+}
 
-        if (vehicle.getStatus() == VehicleStatus.RENTED) {
-            throw new VehicleNotAvailableException(
-                    "Vehicle already rented"
-            );
-        }
+long days = ChronoUnit.DAYS.between(startDate, endDate);
+if (days <= 0) {
+throw new InvalidRentalPeriodException("Rental must be at least 1 day");
+}
 
+// 3. التحقق من الاستراتيجية (Strategy Pattern) ⭐ هنا
+String vehicleType = vehicle.getVehicleType();
+RentalValidationStrategy strategy = validationStrategies.get(vehicleType);
+if (strategy != null && !strategy.validate(customer, vehicle)) {
+throw new IllegalArgumentException(
+"Rental validation failed for " + vehicleType
+);
+}
 
-        if (endDate.isBefore(startDate)) {
-            throw new InvalidRentalPeriodException(
-                    "Invalid rental period"
-            );
-        }
+// 4. إنشاء Rental فقط بعد نجاح كل التحقق
+Rental rental = new Rental();
+rental.setCustomer(customer);
+rental.setVehicle(vehicle);
+rental.setStartDate(startDate);
+rental.setEndDate(endDate);
 
-        long days = ChronoUnit.DAYS.between(startDate, endDate);
+// 5. تحديث الحالة والحفظ
+vehicle.setStatus(VehicleStatus.RENTED);
+vehicleRepository.update(vehicle);
+rentalRepository.save(rental);
 
-        if (days <= 0) {
-            throw new InvalidRentalPeriodException(
-                    "Rental must be at least 1 day"
-            );
-        }
+// 6. الإشعار
+notifyObservers("Vehicle rented successfully: " + vehicle.getBrand());
 
-        Rental rental = new Rental();
-
-        rental.setCustomer(customer);
-        rental.setVehicle(vehicle);
-        rental.setStartDate(startDate);
-        rental.setEndDate(endDate);
-
-
-        vehicle.setStatus(VehicleStatus.RENTED);
-
-        vehicleRepository.update(vehicle);
-
-        rentalRepository.save(rental);
-
-
-        // Observer Pattern notification
-        notifyObservers(
-                "Vehicle rented successfully: "
-                + vehicle.getBrand()
-        );
-
-
-        return rental;
-    }
+return rental;
+}
 
     @Override
     public void addObserver(Observer observer) {
