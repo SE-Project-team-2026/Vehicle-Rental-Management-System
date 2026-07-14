@@ -7,11 +7,9 @@ public class Rental {
     private int rentalId;
     private Customer customer;
     private Vehicle vehicle;
-
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate returnDate;
-
     private boolean active;
 
     public Rental() {
