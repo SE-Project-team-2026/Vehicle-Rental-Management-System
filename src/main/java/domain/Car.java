@@ -20,7 +20,7 @@ public class Car extends Vehicle {
      * @param id           the unique identifier of the vehicle
      * @param brand        the brand of the car
      * @param model        the model of the car
-     * @param dailyRate    the daily rental rate
+     * @param pricePerDay    the daily rental rate
      * @param status       the current status of the vehicle
      * @param licensePlate the license plate number
      * @param year         the manufacturing year
@@ -37,17 +37,20 @@ public class Car extends Vehicle {
         this.color = color;
         this.fuelType = fuelType;
         this.transmission = transmission;
+        this.setStatus(status); // Ensure the status is set correctly
+        
     }
     
     @Override
     public String getVehicleType() {
         return "Car";
     }
-    
+  
     // Getters
     public String getLicensePlate() {
         return licensePlate;
     }
+    
     
     public int getYear() {
         return year;
@@ -69,6 +72,7 @@ public class Car extends Vehicle {
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
+   
     
     public void setYear(int year) {
         this.year = year;
@@ -85,4 +89,6 @@ public class Car extends Vehicle {
     public void setTransmission(String transmission) {
         this.transmission = transmission;
     }
+
+	
 }

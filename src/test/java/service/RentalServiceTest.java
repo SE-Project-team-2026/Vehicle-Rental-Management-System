@@ -120,6 +120,20 @@ class RentalServiceTest {
     }
     
     @Test
+    void testRentVehicle_ShouldThrowException_WhenRentalPeriodIsZeroDays() {
+        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, 
+                                  VehicleStatus.AVAILABLE, "ABC-1234", 2022, 
+                                  "White", "Petrol", "Automatic");
+        vehicleRepository.save(vehicle);
+        
+        LocalDate sameDate = LocalDate.now(); // startDate = endDate (0 days)
+        
+        assertThrows(InvalidRentalPeriodException.class, () -> {
+            rentalService.rentVehicle(customer, vehicle, sameDate, sameDate);
+        });
+    }
+    
+    @Test
     void testReturnVehicleSuccessfully() {
         Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, 
                                   VehicleStatus.AVAILABLE, "ABC-1234", 2022, 
@@ -140,6 +154,73 @@ class RentalServiceTest {
     }
     
     @Test
+    void testRentVehicle_ShouldThrowException_WhenElectricVehicleBatteryLow() {
+        ElectricVehicle ev = new ElectricVehicle(4, "Tesla", "Model 3", 80.0, 
+                                                VehicleStatus.AVAILABLE, 25.0, 350, 8.0);
+        vehicleRepository.save(ev);
+        
+        Map<String, RentalValidationStrategy> validationStrategies = new HashMap<>();
+        validationStrategies.put("ElectricVehicle", new ElectricVehicleValidationStrategy());
+        
+        RentalService rentalServiceWithValidation = new RentalService(
+            rentalRepository, vehicleRepository, validationStrategies
+        );
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            rentalServiceWithValidation.rentVehicle(
+                customer, ev,
+                LocalDate.now(), LocalDate.now().plusDays(2)
+            );
+        });
+    }
+    
+    @Test
+    void testRentVehicle_ShouldThrowException_WhenMotorcycleAgeValidationFails() {
+        Motorcycle motorcycle = new Motorcycle(2, "Honda", "CBR600", 40.0, 
+                                               VehicleStatus.AVAILABLE, 600, 18);
+        vehicleRepository.save(motorcycle);
+        
+        Customer youngCustomer = new Customer(2, "Young User", "456", "DL2", 16);
+        
+        Map<String, RentalValidationStrategy> validationStrategies = new HashMap<>();
+        validationStrategies.put("Motorcycle", new MotorcycleValidationStrategy());
+        
+        RentalService rentalServiceWithValidation = new RentalService(
+            rentalRepository, vehicleRepository, validationStrategies
+        );
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            rentalServiceWithValidation.rentVehicle(
+                youngCustomer, motorcycle,
+                LocalDate.now(), LocalDate.now().plusDays(2)
+            );
+        });
+    }
+    
+    @Test
+    void testRentVehicle_ShouldThrowException_WhenTruckLicenseValidationFails() {
+        Truck truck = new Truck(3, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE, 
+                               5.5, true, 2);
+        vehicleRepository.save(truck);
+        
+        Customer customerWithoutSpecialLicense = new Customer(3, "User", "789", "DL3", 25);
+        
+        Map<String, RentalValidationStrategy> validationStrategies = new HashMap<>();
+        validationStrategies.put("Truck", new TruckValidationStrategy());
+        
+        RentalService rentalServiceWithValidation = new RentalService(
+            rentalRepository, vehicleRepository, validationStrategies
+        );
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            rentalServiceWithValidation.rentVehicle(
+                customerWithoutSpecialLicense, truck,
+                LocalDate.now(), LocalDate.now().plusDays(2)
+            );
+        });
+    }
+    
+    @Test
     void testValidate_ShouldReturnTrue_WhenCustomerAgeIsSufficient() {
         MotorcycleValidationStrategy strategy = new MotorcycleValidationStrategy();
         Customer customer = new Customer(2, "Motorcycle User", "456", "DL2", 20); 
@@ -148,7 +229,6 @@ class RentalServiceTest {
         boolean isValid = strategy.validate(customer, motorcycle);
         assertTrue(isValid);
     }
-    
     
     @Test
     void testValidate_ShouldReturnFalse_WhenCustomerAgeIsBelowMinimum() {
@@ -162,57 +242,52 @@ class RentalServiceTest {
     
     @Test
     void testValidate_ShouldReturnTrue_WhenCustomerHasSpecialLicense() {
-		TruckValidationStrategy strategy = new TruckValidationStrategy();
-				Customer customer = new Customer(3, "Truck User", "789", "SP-3", 25); 
-		Truck truck = new Truck(1, "Ford", "SP-150", 100.0, VehicleStatus.AVAILABLE, 
-								5.5, true, 2);
-		boolean isValid = strategy.validate(customer, truck);
-		assertTrue(isValid);
-	}
-	
-	@Test
-	void testValidate_ShouldReturnFalse_WhenCustomerDoesNotHaveSpecialLicense() {
-		TruckValidationStrategy strategy = new TruckValidationStrategy();
-		Customer customer = new Customer(3, "Truck User", "789", "DL3", 25); 
-Truck truck = new Truck(1, "Ford", "SP-150", 100.0, VehicleStatus.AVAILABLE, 
-						5.5, true, 2);
-boolean isValid = strategy.validate(customer, truck);
-assertFalse(isValid);
-	}
-	
-	@Test
-	void testValidate_ShouldReturnTrue_WhenTruckDoesNotRequireSpecialLicense() {
-	    TruckValidationStrategy strategy = new TruckValidationStrategy();
-	    Customer customer = new Customer(3, "Truck User", "789", "DL3", 25); 
-	    
-	    Truck truck = new Truck(1, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE, 
-	                            5.5, false, 2); 
-	    boolean isValid = strategy.validate(customer, truck);
-	    assertTrue(isValid); 
-	}
-	
-	
-@Test
-void testValidate_ShouldReturnTrue_WhenBatteryLevelIsSufficient() {
-	ElectricVehicleValidationStrategy strategy = new ElectricVehicleValidationStrategy();
-	Customer customer = new Customer(4, "EV User", "012", "DL4", 25); 
-	ElectricVehicle ev = new ElectricVehicle(1, "Tesla", "Model 3", 80.0, 
-											 VehicleStatus.AVAILABLE, 75.0, 350, 8.0); 
-	boolean isValid = strategy.validate(customer, ev);
-	assertTrue(isValid);
+        TruckValidationStrategy strategy = new TruckValidationStrategy();
+        Customer customer = new Customer(3, "Truck User", "789", "SP-3", 25); 
+        Truck truck = new Truck(1, "Ford", "SP-150", 100.0, VehicleStatus.AVAILABLE, 
+                                5.5, true, 2);
+        boolean isValid = strategy.validate(customer, truck);
+        assertTrue(isValid);
+    }
+    
+    @Test
+    void testValidate_ShouldReturnFalse_WhenCustomerDoesNotHaveSpecialLicense() {
+        TruckValidationStrategy strategy = new TruckValidationStrategy();
+        Customer customer = new Customer(3, "Truck User", "789", "DL3", 25); 
+        Truck truck = new Truck(1, "Ford", "SP-150", 100.0, VehicleStatus.AVAILABLE, 
+                                5.5, true, 2);
+        boolean isValid = strategy.validate(customer, truck);
+        assertFalse(isValid);
+    }
+    
+    @Test
+    void testValidate_ShouldReturnTrue_WhenTruckDoesNotRequireSpecialLicense() {
+        TruckValidationStrategy strategy = new TruckValidationStrategy();
+        Customer customer = new Customer(3, "Truck User", "789", "DL3", 25); 
+        
+        Truck truck = new Truck(1, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE, 
+                                5.5, false, 2); 
+        boolean isValid = strategy.validate(customer, truck);
+        assertTrue(isValid); 
+    }
+    
+    @Test
+    void testValidate_ShouldReturnTrue_WhenBatteryLevelIsSufficient() {
+        ElectricVehicleValidationStrategy strategy = new ElectricVehicleValidationStrategy();
+        Customer customer = new Customer(4, "EV User", "012", "DL4", 25); 
+        ElectricVehicle ev = new ElectricVehicle(1, "Tesla", "Model 3", 80.0, 
+                                                 VehicleStatus.AVAILABLE, 75.0, 350, 8.0); 
+        boolean isValid = strategy.validate(customer, ev);
+        assertTrue(isValid);
+    }
+    
+    @Test
+    void testValidate_ShouldReturnFalse_WhenBatteryLevelIsLow() {
+        ElectricVehicleValidationStrategy strategy = new ElectricVehicleValidationStrategy();
+        Customer customer = new Customer(4, "EV User", "012", "DL4", 25); 
+        ElectricVehicle ev = new ElectricVehicle(1, "Tesla", "Model 3", 80.0, 
+                                                 VehicleStatus.AVAILABLE, 25.0, 350, 8.0); 
+        boolean isValid = strategy.validate(customer, ev);
+        assertFalse(isValid);
+    }
 }
-   
-@Test
-void testValidate_ShouldReturnFalse_WhenBatteryLevelIsLow() {
-	ElectricVehicleValidationStrategy strategy = new ElectricVehicleValidationStrategy();
-	Customer customer = new Customer(4, "EV User", "012", "DL4", 25); 
-	ElectricVehicle ev = new ElectricVehicle(1, "Tesla", "Model 3", 80.0, 
-											 VehicleStatus.AVAILABLE, 25.0, 350, 8.0); 
-	boolean isValid = strategy.validate(customer, ev);
-	assertFalse(isValid);
-}
-
-
-
-}
-
