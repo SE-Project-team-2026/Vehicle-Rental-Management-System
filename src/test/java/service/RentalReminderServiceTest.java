@@ -48,8 +48,13 @@ class RentalReminderServiceTest {
 		LocalDate today = LocalDate.now();
 		LocalDate tomorrow = today.plusDays(1);
 		
-		   Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED, "ABC-1234", 2022, "White", "petrol","Automatic");
-	        Customer customer = new Customer(1, "Ali", "123", "DL1", 25);
+		 Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED)
+				 	.setLicensePlate("ABC-1234")
+					.setYear(2022)
+					.setColor("White")
+					.setFuelType("Petrol")
+					.setTransmission("Automatic")
+					.build();	        Customer customer = new Customer(1, "Ali", "123", "DL1", 25);
 	        Rental activeRental = new Rental(1, customer, vehicle, today.minusDays(2), tomorrow);
 	        
 	        List<Rental> rentals = Arrays.asList(activeRental);
@@ -66,7 +71,14 @@ class RentalReminderServiceTest {
 	 LocalDate today = LocalDate.now();
 	 LocalDate dayAfterTomorrow = today.plusDays(10);
 	 
-	 Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED, "ABC-1234", 2022, "White", "petrol","Automatic");
+	 Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED)
+			 	.setLicensePlate("ABC-1234")
+				.setYear(2022)
+				.setColor("White")
+				.setFuelType("Petrol")
+				.setTransmission("Automatic")
+				.build();
+	 
 	 Customer customer = new Customer(1, "Ali", "123", "DL1", 25);
 	 Rental activeRental = new Rental(1, customer, vehicle, today.minusDays(2), dayAfterTomorrow);
 	 

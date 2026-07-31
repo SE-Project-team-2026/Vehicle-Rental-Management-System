@@ -24,7 +24,13 @@ class BillingServiceTest {
 
 
         Vehicle vehicle =
-                new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, "ABC-1234", 2022, "White", "petrol","Automatic");
+                new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+                		.setLicensePlate("ABC-1234")
+						.setYear(2022)
+						.setColor("White")
+						.setFuelType("Petrol")
+						.setTransmission("Automatic")
+						.build();
 
         Customer customer =
                 new Customer(
@@ -68,8 +74,14 @@ class BillingServiceTest {
 
 
         Vehicle vehicle =
-                new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED, "ABC-1234", 2022, "White", "petrol","Automatic");
-
+                new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED)
+        .setLicensePlate("ABC-1234")
+        .setYear(2022)
+        .setColor("White")
+        .setFuelType("Petrol")
+        .setTransmission("Automatic")
+        .build();
+        
         Customer customer =
                 new Customer(
                         1,

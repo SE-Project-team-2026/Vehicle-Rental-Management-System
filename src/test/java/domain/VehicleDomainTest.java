@@ -8,9 +8,16 @@ class VehicleDomainTest {
 
     @Test
     void testCarCreationAndAvailability() {
-        Car car = new Car(1, "Toyota", "Corolla", 50.0, 
-                         VehicleStatus.AVAILABLE, "ABC-1234", 
-                         2022, "White", "Petrol", "Automatic");
+        Car car = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, 
+                         VehicleStatus.AVAILABLE)
+        .setLicensePlate("ABC-1234")
+        .setYear(2022)
+        .setColor("White")
+        .setFuelType("Petrol")
+        .setTransmission("Automatic")
+        .build();
+        
+        
         
         assertEquals("Car", car.getVehicleType());
         assertEquals("Toyota", car.getBrand());
@@ -102,7 +109,13 @@ class VehicleDomainTest {
     @Test
     void testVehiclePolymorphism() {
         Vehicle[] vehicles = new Vehicle[] {
-            new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, "ABC-1234", 2022, "White", "Petrol", "Automatic"),
+            new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE) 
+            .setLicensePlate("ABC-1234")
+            .setYear(2022)
+            .setColor("White")
+            .setFuelType("Petrol")
+            .setTransmission("Automatic")
+            .build(),
             new Motorcycle(2, "Honda", "CBR600", 40.0, VehicleStatus.AVAILABLE, 600, 18),
             new Truck(3, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE, 5.5, true, 2),
             new Van(4, "Toyota", "Hiace", 80.0, VehicleStatus.AVAILABLE, 15, 12, true),

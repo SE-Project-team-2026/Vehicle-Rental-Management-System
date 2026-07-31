@@ -53,8 +53,14 @@ public class Main {
         rentalService.addObserver(smsObserver);
 
         // 6. إنشاء مركبات مختلفة
-        Car car = new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, 
-                         "ABC-1234", 2022, "White", "Petrol", "Automatic");
+        Car car = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+        		.setLicensePlate("ABC-1234")
+        		.setYear(2022)
+        		.setColor("White")
+        		.setFuelType("Petrol")
+        		.setTransmission("Automatic")
+        		.build();
+        
         
         Motorcycle motorcycle = new Motorcycle(2, "Honda", "CBR600", 40.0, 
                                                VehicleStatus.AVAILABLE, 600, 18);

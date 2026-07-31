@@ -15,8 +15,13 @@ class RentalTest {
         // 1. تجهيز البيانات (Arrange)
         Customer customer = new Customer(1, "Ali", "123", "DL1", 25);
 
-        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, 
-                                  "ABC-1234", 2022, "White", "Petrol", "Automatic");
+        Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+        	.setLicensePlate("ABC-1234")
+			.setYear(2022)
+			.setColor("White")
+			.setFuelType("Petrol")
+			.setTransmission("Automatic")
+			.build();
 
         Rental rental = new Rental();
 

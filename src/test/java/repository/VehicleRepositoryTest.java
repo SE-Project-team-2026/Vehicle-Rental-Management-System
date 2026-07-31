@@ -20,18 +20,34 @@ class VehicleRepositoryTest {
         vehicleRepository = new VehicleRepository();
         
         // إضافة مركبات متاحة
-        Vehicle car1 = new Car(1, "Toyota", "Corolla", 50.0, 
-                               VehicleStatus.AVAILABLE, "ABC-1234", 
-                               2022, "White", "Petrol", "Automatic");
+        Vehicle car1 = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, 
+                               VehicleStatus.AVAILABLE)
+        		  .setLicensePlate("ABC-1234")
+        	        .setYear(2022)
+        	        .setColor("White")
+        	        .setFuelType("Petrol")
+        	        .setTransmission("Automatic")
+        	        .build();
+        		
         
-        Vehicle car2 = new Car(2, "Honda", "Civic", 60.0, 
-                               VehicleStatus.AVAILABLE, "XYZ-9876", 
-                               2023, "Black", "Hybrid", "Automatic");
+        Vehicle car2 = new Car.CarBuilder(2, "Honda", "Civic", 60.0, 
+                               VehicleStatus.AVAILABLE)
+        		 .setLicensePlate("XYZ-9876")
+                 .setYear(2023)
+                 .setColor("Black")
+                 .setFuelType("Hybrid")
+                 .setTransmission("Automatic")
+                 .build();
         
         // إضافة مركبة مستأجرة (غير متاحة)
-        Vehicle car3 = new Car(3, "BMW", "X5", 150.0, 
-                               VehicleStatus.RENTED, "DEF-5678", 
-                               2024, "Silver", "Petrol", "Automatic");
+        Vehicle car3 = new Car.CarBuilder(3, "BMW", "X5", 150.0, 
+                               VehicleStatus.RENTED)
+        .setLicensePlate("DEF-5678")
+        .setYear(2021)
+        .setColor("Silver")
+        .setFuelType("Petrol")
+        .setTransmission("Automatic")
+        .build();
         
         vehicleRepository.save(car1);
         vehicleRepository.save(car2);

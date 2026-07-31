@@ -26,8 +26,13 @@ class RentalRepositoryTest {
     void testSaveAndFindAll() {
         Customer customer = new Customer(1, "Ali", "123", "DL1", 25);
 
-        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE, 
-                                  "ABC-1234", 2022, "White", "Petrol", "Automatic");
+        Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+        		  .setLicensePlate("ABC-1234")
+        	        .setYear(2022)
+        	        .setColor("White")
+        	        .setFuelType("Petrol")
+        	        .setTransmission("Automatic")
+        	        .build();
 
         Rental rental = new Rental(1, customer, vehicle, LocalDate.now(), LocalDate.now().plusDays(3));
 
@@ -41,9 +46,13 @@ class RentalRepositoryTest {
     void testFindActiveRentalByVehicleId_ReturnRental() {
         Customer customer = new Customer(1, "Ali", "123", "DL1", 25);
 
-        Vehicle vehicle = new Car(10, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED, 
-                                  "XYZ-9876", 2023, "Black", "Hybrid", "Automatic");
-
+        Vehicle vehicle = new Car.CarBuilder(10, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED)
+                                  .setLicensePlate("XYZ-9876")
+                                  .setYear(2023)
+                                  .setColor("Black")
+                                  .setFuelType("Hybrid")
+                                  .setTransmission("Automatic")
+                                  .build();
         Rental rental = new Rental(1, customer, vehicle, LocalDate.now(), LocalDate.now().plusDays(2));
 
         rentalRepository.save(rental);
@@ -64,8 +73,13 @@ class RentalRepositoryTest {
     void testFindActiveRentalByVehicleId_WhenRentalClosed() {
         Customer customer = new Customer(1, "Ali", "123", "DL1", 25);
 
-        Vehicle vehicle = new Car(5, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED, 
-                                  "DEF-5678", 2021, "Silver", "Petrol", "Manual");
+        Vehicle vehicle = new Car.CarBuilder(5, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED) 
+        		  .setLicensePlate("DEF-5678")
+        	        .setYear(2021)
+        	        .setColor("Silver")
+        	        .setFuelType("Petrol")
+        	        .setTransmission("Manual")
+        	        .build();
 
         Rental rental = new Rental(1, customer, vehicle, LocalDate.now(), LocalDate.now().plusDays(2));
 

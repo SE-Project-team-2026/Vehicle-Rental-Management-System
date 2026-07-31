@@ -28,19 +28,63 @@ public class Car extends Vehicle {
      * @param fuelType     the fuel type (e.g., Petrol, Diesel, Hybrid)
      * @param transmission the transmission type (e.g., Automatic, Manual)
      */
-    public Car(int id, String brand, String model, double dailyRate, 
-               VehicleStatus status, String licensePlate, int year, 
-               String color, String fuelType, String transmission) {
-        super(id, brand, model, dailyRate, status);
-        this.licensePlate = licensePlate;
-        this.year = year;
-        this.color = color;
-        this.fuelType = fuelType;
-        this.transmission = transmission;
-        this.setStatus(status); // Ensure the status is set correctly
-        
+    private Car(CarBuilder builder) {
+      super(builder.id, builder.brand, builder.model, builder.dailyRate, builder.status);
+        this.licensePlate = builder.licensePlate;
+        this.year = builder.year;
+        this.color = builder.color;
+        this.fuelType =builder.fuelType;
+        this.transmission = builder.transmission;        
     }
     
+    public static class CarBuilder {
+		private int id;
+		private String brand;
+		private String model;
+		private double dailyRate;
+		private VehicleStatus status;
+		private String licensePlate;
+		private int year;
+		private String color;
+		private String fuelType;
+		private String transmission;
+    public CarBuilder(int id, String brand, String model, double dailyRate, VehicleStatus status) {
+	this.id = id;
+	this.brand = brand;
+	this.model = model;
+	this.dailyRate = dailyRate;
+	this.status = status;
+		}
+
+		public CarBuilder setLicensePlate(String licensePlate) {
+			this.licensePlate = licensePlate;
+			return this;
+		}
+
+		public CarBuilder setYear(int year) {
+			this.year = year;
+			return this;
+		}
+
+		public CarBuilder setColor(String color) {
+			this.color = color;
+			return this;
+		}
+
+		public CarBuilder setFuelType(String fuelType) {
+			this.fuelType = fuelType;
+			return this;
+		}
+
+		public CarBuilder setTransmission(String transmission) {
+			this.transmission = transmission;
+			return this;
+		}
+
+		public Car build() {
+			return new Car(this);
+		}
+	}
     @Override
     public String getVehicleType() {
         return "Car";
@@ -68,27 +112,5 @@ public class Car extends Vehicle {
         return transmission;
     }
     
-    // Setters
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-   
-    
-    public void setYear(int year) {
-        this.year = year;
-    }
-    
-    public void setColor(String color) {
-        this.color = color;
-    }
-    
-    public void setFuelType(String fuelType) {
-        this.fuelType = fuelType;
-    }
-    
-    public void setTransmission(String transmission) {
-        this.transmission = transmission;
-    }
-
 	
 }

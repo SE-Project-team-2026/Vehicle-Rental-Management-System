@@ -52,9 +52,13 @@ class RentalServiceTest {
     
     @Test
     void testRentVehicleSuccessfully() {
-        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, 
-                                  VehicleStatus.AVAILABLE, "ABC-1234", 2022, 
-                                  "White", "Petrol", "Automatic");
+    	 Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+  			 	.setLicensePlate("ABC-1234")
+  				.setYear(2022)
+  				.setColor("White")
+  				.setFuelType("Petrol")
+  				.setTransmission("Automatic")
+  				.build();
         vehicleRepository.save(vehicle);
         
         Rental rental = rentalService.rentVehicle(
@@ -68,9 +72,13 @@ class RentalServiceTest {
     
     @Test
     void testDoubleBooking() {
-        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, 
-                                  VehicleStatus.AVAILABLE, "ABC-1234", 2022, 
-                                  "White", "Petrol", "Automatic");
+    	 Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+  			 	.setLicensePlate("ABC-1234")
+  				.setYear(2022)
+  				.setColor("White")
+  				.setFuelType("Petrol")
+  				.setTransmission("Automatic")
+  				.build();
         vehicleRepository.save(vehicle);
         
         rentalService.rentVehicle(
@@ -91,9 +99,13 @@ class RentalServiceTest {
         Observer observer = mock(Observer.class);
         rentalService.addObserver(observer);
         
-        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, 
-                                  VehicleStatus.AVAILABLE, "ABC-1234", 2022, 
-                                  "White", "Petrol", "Automatic");
+        Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+ 			 	.setLicensePlate("ABC-1234")
+ 				.setYear(2022)
+ 				.setColor("White")
+ 				.setFuelType("Petrol")
+ 				.setTransmission("Automatic")
+ 				.build();
         vehicleRepository.save(vehicle);
         
         rentalService.rentVehicle(
@@ -106,9 +118,13 @@ class RentalServiceTest {
     
     @Test
     void testInvalidRentalPeriod() {
-        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, 
-                                  VehicleStatus.AVAILABLE, "ABC-1234", 2022, 
-                                  "White", "Petrol", "Automatic");
+    	 Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+ 			 	.setLicensePlate("ABC-1234")
+ 				.setYear(2022)
+ 				.setColor("White")
+ 				.setFuelType("Petrol")
+ 				.setTransmission("Automatic")
+ 				.build();
         vehicleRepository.save(vehicle);
         
         assertThrows(InvalidRentalPeriodException.class, () -> {
@@ -121,9 +137,13 @@ class RentalServiceTest {
     
     @Test
     void testRentVehicle_ShouldThrowException_WhenRentalPeriodIsZeroDays() {
-        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, 
-                                  VehicleStatus.AVAILABLE, "ABC-1234", 2022, 
-                                  "White", "Petrol", "Automatic");
+    	 Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+ 			 	.setLicensePlate("ABC-1234")
+ 				.setYear(2022)
+ 				.setColor("White")
+ 				.setFuelType("Petrol")
+ 				.setTransmission("Automatic")
+ 				.build();
         vehicleRepository.save(vehicle);
         
         LocalDate sameDate = LocalDate.now(); // startDate = endDate (0 days)
@@ -135,9 +155,13 @@ class RentalServiceTest {
     
     @Test
     void testReturnVehicleSuccessfully() {
-        Vehicle vehicle = new Car(1, "Toyota", "Corolla", 50.0, 
-                                  VehicleStatus.AVAILABLE, "ABC-1234", 2022, 
-                                  "White", "Petrol", "Automatic");
+    	 Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+  			 	.setLicensePlate("ABC-1234")
+  				.setYear(2022)
+  				.setColor("White")
+  				.setFuelType("Petrol")
+  				.setTransmission("Automatic")
+  				.build();
         vehicleRepository.save(vehicle);
         
         Rental rental = rentalService.rentVehicle(
