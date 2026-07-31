@@ -127,12 +127,12 @@ class RentalServiceTest {
  				.build();
         vehicleRepository.save(vehicle);
         
-        assertThrows(InvalidRentalPeriodException.class, () -> {
-            rentalService.rentVehicle(
-                customer, vehicle,
-                LocalDate.now(), LocalDate.now().minusDays(1)
-            );
-        });
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
+
+        assertThrows(InvalidRentalPeriodException.class, () -> 
+            rentalService.rentVehicle(customer, vehicle, today, yesterday)
+        );
     }
     
     @Test
@@ -155,13 +155,15 @@ class RentalServiceTest {
     
     @Test
     void testReturnVehicleSuccessfully() {
-    	 Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
-  			 	.setLicensePlate("ABC-1234")
-  				.setYear(2022)
-  				.setColor("White")
-  				.setFuelType("Petrol")
-  				.setTransmission("Automatic")
-  				.build();
+        Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, 
+                                  VehicleStatus.AVAILABLE)
+        		.setLicensePlate("ABC-1234")
+        						.setYear(2022)
+        						.setColor("White")
+        						.setFuelType("Petrol")
+        						.setTransmission("Automatic")
+        						.build();
+        
         vehicleRepository.save(vehicle);
         
         Rental rental = rentalService.rentVehicle(
