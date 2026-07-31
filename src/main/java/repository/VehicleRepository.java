@@ -7,9 +7,11 @@ import domain.Vehicle;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class VehicleRepository {
 
+	private static final Logger LOGGER = Logger.getLogger(VehicleRepository.class.getName());
     private List<Vehicle> vehicles;
 
     public VehicleRepository() {
@@ -18,8 +20,8 @@ public class VehicleRepository {
             InputStream inputStream = getClass().getResourceAsStream("/vehicles.json");
             this.vehicles = mapper.readValue(inputStream, new TypeReference<List<Vehicle>>() {});
         } catch (Exception e) {
-            e.printStackTrace();
-            this.vehicles = new ArrayList<>(); 
+        	LOGGER.severe("Failed to load vehicles data: " + e.getMessage());
+        	this.vehicles = new ArrayList<>(); 
         }
     }
 
