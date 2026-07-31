@@ -34,16 +34,11 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       
-      - name: Build, Test, and Analyze with JaCoCo
+      - name: Build and Test (Generates JaCoCo Report)
+        run: mvn clean verify
+      
+      - name: SonarCloud Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: >
-          mvn -B 
-          jacoco:prepare-agent 
-          verify 
-          org.sonarsource.scanner.maven:sonar-maven-plugin:sonar 
-          jacoco:report
-          -Dsonar.coverage.exclusions=**/presentation/**/*.java
-          -Dsonar.projectKey=SE-Project-team-2026_Vehicle-Rental-Management-System
-          -Dsonar.organization=SE-Project-team-2026
+        run: mvn sonar:sonar -Dsonar.projectKey=SE-Project-team-2026_Vehicle-Rental-Management-System -Dsonar.organization=SE-Project-team-2026
