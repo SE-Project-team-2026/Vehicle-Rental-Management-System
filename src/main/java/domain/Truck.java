@@ -19,24 +19,65 @@ public class Truck extends Vehicle {
     private int numberOfAxles;          // عدد المحاور
     
     /**
-     * Constructs a new Truck with all specified attributes.
+     * Private constructor used by the Builder.
      *
-     * @param id                     the unique identifier
-     * @param brand                  the brand of the truck
-     * @param model                  the model of the truck
-     * @param dailyRate              the daily rental rate
-     * @param status                 the current status
-     * @param maxLoadCapacity        the maximum load capacity in tons
-     * @param requiresSpecialLicense whether a special license is required
-     * @param numberOfAxles          the number of axles
+     * @param builder the builder containing the truck data
      */
-    public Truck(int id, String brand, String model, double dailyRate, 
-                 VehicleStatus status, double maxLoadCapacity, 
-                 boolean requiresSpecialLicense, int numberOfAxles) {
-        super(id, brand, model, dailyRate, status);
-        this.maxLoadCapacity = maxLoadCapacity;
-        this.requiresSpecialLicense = requiresSpecialLicense;
-        this.numberOfAxles = numberOfAxles;
+    private Truck(TruckBuilder builder) {
+        super(builder.id, builder.brand, builder.model, builder.dailyRate, builder.status);
+        this.maxLoadCapacity = builder.maxLoadCapacity;
+        this.requiresSpecialLicense = builder.requiresSpecialLicense;
+        this.numberOfAxles = builder.numberOfAxles;
+    }
+    
+    /**
+     * Builder for {@link Truck} instances.
+     */
+    public static class TruckBuilder {
+        private int id;
+        private String brand;
+        private String model;
+        private double dailyRate;
+        private VehicleStatus status;
+        private double maxLoadCapacity;
+        private boolean requiresSpecialLicense;
+        private int numberOfAxles;
+
+        /**
+         * Creates a builder with the required fields.
+         *
+         * @param id        unique vehicle identifier
+         * @param brand     vehicle brand
+         * @param model     vehicle model
+         * @param dailyRate daily rental rate
+         * @param status    initial vehicle status
+         */
+        public TruckBuilder(int id, String brand, String model, double dailyRate, VehicleStatus status) {
+            this.id = id;
+            this.brand = brand;
+            this.model = model;
+            this.dailyRate = dailyRate;
+            this.status = status;
+        }
+
+        public TruckBuilder setMaxLoadCapacity(double maxLoadCapacity) {
+            this.maxLoadCapacity = maxLoadCapacity;
+            return this;
+        }
+
+        public TruckBuilder setRequiresSpecialLicense(boolean requiresSpecialLicense) {
+            this.requiresSpecialLicense = requiresSpecialLicense;
+            return this;
+        }
+
+        public TruckBuilder setNumberOfAxles(int numberOfAxles) {
+            this.numberOfAxles = numberOfAxles;
+            return this;
+        }
+
+        public Truck build() {
+            return new Truck(this);
+        }
     }
     
     @Override

@@ -16,92 +16,85 @@ public class ElectricVehicle extends Vehicle {
     /**
      * Constructs a new ElectricVehicle with all specified attributes.
      *
-     * @param id            the unique identifier
-     * @param brand         the brand of the vehicle
-     * @param model         the model of the vehicle
-     * @param dailyRate     the daily rental rate
-     * @param status        the current status
-     * @param batteryLevel  the current battery level percentage
-     * @param range         the driving range in kilometers
-     * @param chargingTime  the time required for a full charge in hours
+     * @param builder the electric vehicle builder
      */
-    public ElectricVehicle(ElectricVehicleBuilder builder) {
-    	super(builder.id, builder.brand, builder.model, builder.dailyRate, builder.status);
-		this.batteryLevel = builder.batteryLevel;
-		this.range = builder.range;
-		this.chargingTime = builder.chargingTime;
+    private ElectricVehicle(ElectricVehicleBuilder builder) {
+        super(builder.id, builder.brand, builder.model, builder.dailyRate, builder.status);
+        this.batteryLevel = builder.batteryLevel;
+        this.range = builder.range;
+        this.chargingTime = builder.chargingTime;
     }
     
     public static class ElectricVehicleBuilder {
 
-		private int id;
-		private String brand;
-		private String model;
-		private double dailyRate;
-		private VehicleStatus status;
-		private double batteryLevel;
-		private int range;
-		private double chargingTime;
+        private int id;
+        private String brand;
+        private String model;
+        private double dailyRate;
+        private VehicleStatus status;
+        private double batteryLevel;
+        private int range;
+        private double chargingTime;
 
-		/**
-		 * Creates a builder with the required fields.
-		 *
-		 * @param id        unique vehicle identifier
-		 * @param brand     vehicle brand
-		 * @param model     vehicle model
-		 * @param dailyRate daily rental rate
-		 * @param status    initial vehicle status
-		 */
-		public ElectricVehicleBuilder(int id, String brand, String model, double dailyRate, VehicleStatus status) {
-			this.id = id;
-			this.brand = brand;
-			this.model = model;
-			this.dailyRate = dailyRate;
-			this.status = status;
-		}
+        /**
+         * Creates a builder with the required fields.
+         *
+         * @param id        unique vehicle identifier
+         * @param brand     vehicle brand
+         * @param model     vehicle model
+         * @param dailyRate daily rental rate
+         * @param status    initial vehicle status
+         */
+        public ElectricVehicleBuilder(int id, String brand, String model, double dailyRate, VehicleStatus status) {
+            this.id = id;
+            this.brand = brand;
+            this.model = model;
+            this.dailyRate = dailyRate;
+            this.status = status;
+        }
 
-		/**
-		 * Sets the battery level percentage.
-		 *
-		 * @param batteryLevel the battery level to set
-		 * @return this builder
-		 */
-		public ElectricVehicleBuilder setBatteryLevel(double batteryLevel) {
-			this.batteryLevel = batteryLevel;
-			return this;
-		}
+        /**
+         * Sets the battery level percentage.
+         *
+         * @param batteryLevel the battery level to set
+         * @return this builder
+         */
+        public ElectricVehicleBuilder setBatteryLevel(double batteryLevel) {
+            this.batteryLevel = batteryLevel;
+            return this;
+        }
 
-		/**
-		 * Sets the driving range.
-		 *
-		 * @param range the range to set
-		 * @return this builder
-		 */
-		public ElectricVehicleBuilder setRange(int range) {
-			this.range = range;
-			return this;
-		}
+        /**
+         * Sets the driving range.
+         *
+         * @param range the range to set
+         * @return this builder
+         */
+        public ElectricVehicleBuilder setRange(int range) {
+            this.range = range;
+            return this;
+        }
 
-		/**
-		 * Sets the charging time.
-		 *
-		 * @param chargingTime the charging time to set
-		 * @return this builder
-		 */
-		public ElectricVehicleBuilder setChargingTime(double chargingTime) {
-			this.chargingTime = chargingTime;
-			return this;
-		}
+        /**
+         * Sets the charging time.
+         *
+         * @param chargingTime the charging time to set
+         * @return this builder
+         */
+        public ElectricVehicleBuilder setChargingTime(double chargingTime) {
+            this.chargingTime = chargingTime;
+            return this;
+        }
 
-		/**
-		 * Builds the final {@link ElectricVehicle} instance.
-		 *
-		 * @return the constructed electric vehicle
-		 */
-		public ElectricVehicle build() {
-			return new ElectricVehicle(this);
-		}
-	}
+        /**
+         * Builds the final {@link ElectricVehicle} instance.
+         *
+         * @return the constructed electric vehicle
+         */
+        public ElectricVehicle build() {
+            return new ElectricVehicle(this);
+        }
+    }
     @Override
     public String getVehicleType() {
         return "ElectricVehicle";

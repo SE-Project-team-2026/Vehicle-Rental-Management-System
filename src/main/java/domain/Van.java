@@ -18,24 +18,65 @@ public class Van extends Vehicle {
     private boolean hasSlidingDoor;  // باب منزلق
     
     /**
-     * Constructs a new Van with all specified attributes.
+     * Private constructor used by the Builder.
      *
-     * @param id                the unique identifier
-     * @param brand             the brand of the van
-     * @param model             the model of the van
-     * @param dailyRate         the daily rental rate
-     * @param status            the current status
-     * @param cargoCapacity     the cargo capacity in liters
-     * @param passengerCapacity the passenger capacity
-     * @param hasSlidingDoor    whether the van has a sliding door
+     * @param builder the builder containing the van data
      */
-    public Van(int id, String brand, String model, double dailyRate, 
-               VehicleStatus status, int cargoCapacity, int passengerCapacity, 
-               boolean hasSlidingDoor) {
-        super(id, brand, model, dailyRate, status);
-        this.cargoCapacity = cargoCapacity;
-        this.passengerCapacity = passengerCapacity;
-        this.hasSlidingDoor = hasSlidingDoor;
+    private Van(VanBuilder builder) {
+        super(builder.id, builder.brand, builder.model, builder.dailyRate, builder.status);
+        this.cargoCapacity = builder.cargoCapacity;
+        this.passengerCapacity = builder.passengerCapacity;
+        this.hasSlidingDoor = builder.hasSlidingDoor;
+    }
+    
+    /**
+     * Builder for {@link Van} instances.
+     */
+    public static class VanBuilder {
+        private int id;
+        private String brand;
+        private String model;
+        private double dailyRate;
+        private VehicleStatus status;
+        private int cargoCapacity;
+        private int passengerCapacity;
+        private boolean hasSlidingDoor;
+
+        /**
+         * Creates a builder with the required fields.
+         *
+         * @param id        unique vehicle identifier
+         * @param brand     vehicle brand
+         * @param model     vehicle model
+         * @param dailyRate daily rental rate
+         * @param status    initial vehicle status
+         */
+        public VanBuilder(int id, String brand, String model, double dailyRate, VehicleStatus status) {
+            this.id = id;
+            this.brand = brand;
+            this.model = model;
+            this.dailyRate = dailyRate;
+            this.status = status;
+        }
+
+        public VanBuilder setCargoCapacity(int cargoCapacity) {
+            this.cargoCapacity = cargoCapacity;
+            return this;
+        }
+
+        public VanBuilder setPassengerCapacity(int passengerCapacity) {
+            this.passengerCapacity = passengerCapacity;
+            return this;
+        }
+
+        public VanBuilder setHasSlidingDoor(boolean hasSlidingDoor) {
+            this.hasSlidingDoor = hasSlidingDoor;
+            return this;
+        }
+
+        public Van build() {
+            return new Van(this);
+        }
     }
     
     @Override
