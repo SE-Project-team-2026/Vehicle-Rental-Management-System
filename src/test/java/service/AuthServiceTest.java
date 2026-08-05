@@ -64,4 +64,16 @@ class AuthServiceTest {
 		assertFalse(authService.isLoggedIn());
 		assertNull(authService.getCurrentManager());
 	}
+	
+	@Test
+	public void testRequireLogin_WhenLoggedIn() {
+		authService.login("ahmad", "1234");
+		
+		assertDoesNotThrow(() -> authService.requireLogin());
+	}
+	
+	@Test
+	public void testRequireLogin_ThrowsWhenNotLoggedIn() {
+		assertThrows(IllegalStateException.class, () -> authService.requireLogin());
+	}
 }

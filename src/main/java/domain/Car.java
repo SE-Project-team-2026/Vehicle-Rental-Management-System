@@ -3,114 +3,177 @@ package domain;
 import enums.VehicleStatus;
 
 /**
- * Represents a Car vehicle in the rental system.
- * Extends the base Vehicle class with car-specific attributes.
+ * Represents a Car vehicle in the rental system (US5.1).
+ *
+ * <p>Extends the base {@link Vehicle} class with car-specific attributes and
+ * is constructed through the {@link CarBuilder}.</p>
  */
 public class Car extends Vehicle {
-    
-    private String licensePlate;    // رقم اللوحة
-    private int year;               // سنة الصنع
-    private String color;           // اللون
-    private String fuelType;        // نوع الوقود
-    private String transmission;    // ناقل الحركة
-    
+
+    /** License plate number. */
+    private String licensePlate;
+
+    /** Manufacturing year. */
+    private int year;
+
+    /** Color of the car. */
+    private String color;
+
+    /** Fuel type (e.g. Petrol, Diesel, Hybrid). */
+    private String fuelType;
+
+    /** Transmission type (e.g. Automatic, Manual). */
+    private String transmission;
+
     /**
-     * Constructs a new Car with all specified attributes.
+     * Creates a car from the values held by the builder.
      *
-     * @param id           the unique identifier of the vehicle
-     * @param brand        the brand of the car
-     * @param model        the model of the car
-     * @param pricePerDay    the daily rental rate
-     * @param status       the current status of the vehicle
-     * @param licensePlate the license plate number
-     * @param year         the manufacturing year
-     * @param color        the color of the car
-     * @param fuelType     the fuel type (e.g., Petrol, Diesel, Hybrid)
-     * @param transmission the transmission type (e.g., Automatic, Manual)
+     * @param builder the builder containing the car data
      */
     private Car(CarBuilder builder) {
-      super(builder.id, builder.brand, builder.model, builder.dailyRate, builder.status);
+        super(builder.id, builder.brand, builder.model, builder.dailyRate, builder.status);
         this.licensePlate = builder.licensePlate;
         this.year = builder.year;
         this.color = builder.color;
-        this.fuelType =builder.fuelType;
-        this.transmission = builder.transmission;        
+        this.fuelType = builder.fuelType;
+        this.transmission = builder.transmission;
     }
-    
+
+    /**
+     * Builder for {@link Car} instances.
+     */
     public static class CarBuilder {
-		private int id;
-		private String brand;
-		private String model;
-		private double dailyRate;
-		private VehicleStatus status;
-		private String licensePlate;
-		private int year;
-		private String color;
-		private String fuelType;
-		private String transmission;
-    public CarBuilder(int id, String brand, String model, double dailyRate, VehicleStatus status) {
-	this.id = id;
-	this.brand = brand;
-	this.model = model;
-	this.dailyRate = dailyRate;
-	this.status = status;
-		}
 
-		public CarBuilder setLicensePlate(String licensePlate) {
-			this.licensePlate = licensePlate;
-			return this;
-		}
+        private int id;
+        private String brand;
+        private String model;
+        private double dailyRate;
+        private VehicleStatus status;
+        private String licensePlate;
+        private int year;
+        private String color;
+        private String fuelType;
+        private String transmission;
 
-		public CarBuilder setYear(int year) {
-			this.year = year;
-			return this;
-		}
+        /**
+         * Creates a builder with the required fields.
+         *
+         * @param id        unique vehicle identifier
+         * @param brand     car brand
+         * @param model     car model
+         * @param dailyRate daily rental rate
+         * @param status    initial vehicle status
+         */
+        public CarBuilder(int id, String brand, String model, double dailyRate, VehicleStatus status) {
+            this.id = id;
+            this.brand = brand;
+            this.model = model;
+            this.dailyRate = dailyRate;
+            this.status = status;
+        }
 
-		public CarBuilder setColor(String color) {
-			this.color = color;
-			return this;
-		}
+        /**
+         * Sets the license plate number.
+         *
+         * @param licensePlate the license plate to set
+         * @return this builder
+         */
+        public CarBuilder setLicensePlate(String licensePlate) {
+            this.licensePlate = licensePlate;
+            return this;
+        }
 
-		public CarBuilder setFuelType(String fuelType) {
-			this.fuelType = fuelType;
-			return this;
-		}
+        /**
+         * Sets the manufacturing year.
+         *
+         * @param year the year to set
+         * @return this builder
+         */
+        public CarBuilder setYear(int year) {
+            this.year = year;
+            return this;
+        }
 
-		public CarBuilder setTransmission(String transmission) {
-			this.transmission = transmission;
-			return this;
-		}
+        /**
+         * Sets the color.
+         *
+         * @param color the color to set
+         * @return this builder
+         */
+        public CarBuilder setColor(String color) {
+            this.color = color;
+            return this;
+        }
 
-		public Car build() {
-			return new Car(this);
-		}
-	}
+        /**
+         * Sets the fuel type.
+         *
+         * @param fuelType the fuel type to set
+         * @return this builder
+         */
+        public CarBuilder setFuelType(String fuelType) {
+            this.fuelType = fuelType;
+            return this;
+        }
+
+        /**
+         * Sets the transmission type.
+         *
+         * @param transmission the transmission to set
+         * @return this builder
+         */
+        public CarBuilder setTransmission(String transmission) {
+            this.transmission = transmission;
+            return this;
+        }
+
+        /**
+         * Builds the final {@link Car} instance.
+         *
+         * @return the constructed car
+         */
+        public Car build() {
+            return new Car(this);
+        }
+    }
+
     @Override
     public String getVehicleType() {
         return "Car";
     }
-  
-    // Getters
+
+    /**
+     * @return the license plate number
+     */
     public String getLicensePlate() {
         return licensePlate;
     }
-    
-    
+
+    /**
+     * @return the manufacturing year
+     */
     public int getYear() {
         return year;
     }
-    
+
+    /**
+     * @return the color
+     */
     public String getColor() {
         return color;
     }
-    
+
+    /**
+     * @return the fuel type
+     */
     public String getFuelType() {
         return fuelType;
     }
-    
+
+    /**
+     * @return the transmission type
+     */
     public String getTransmission() {
         return transmission;
     }
-    
-	
 }

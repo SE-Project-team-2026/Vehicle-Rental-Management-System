@@ -66,4 +66,38 @@ class VehicleRepositoryTest {
             assertTrue(v.isAvailable()); 
         }
     }
+
+    @Test
+    void testFindById_ReturnsMatchingVehicle() {
+        Vehicle found = vehicleRepository.findById(2);
+        assertNotNull(found);
+        assertEquals("Honda", found.getBrand());
+
+        assertNull(vehicleRepository.findById(999));
+    }
+
+    @Test
+    void testFindAll_ReturnsAllVehicles() {
+        assertEquals(3, vehicleRepository.findAll().size());
+    }
+
+    @Test
+    void testUpdate_ReplacesVehicleWithSameId() {
+        Vehicle updated = new Car.CarBuilder(1, "Toyota", "Camry", 55.0,
+                VehicleStatus.RENTED)
+                .setLicensePlate("NEW-0001")
+                .setYear(2024)
+                .setColor("Red")
+                .setFuelType("Petrol")
+                .setTransmission("Automatic")
+                .build();
+
+        vehicleRepository.update(updated);
+
+        Vehicle found = vehicleRepository.findById(1);
+        assertNotNull(found);
+        assertEquals("Camry", found.getModel());
+        assertEquals(55.0, found.getPricePerDay());
+        assertEquals(VehicleStatus.RENTED, found.getStatus());
+    }
 }

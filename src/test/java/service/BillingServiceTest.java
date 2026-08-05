@@ -125,4 +125,33 @@ class BillingServiceTest {
         );
 
     }
+
+    @Test
+    void testNoLatePenaltyWhenReturnedOnTime() {
+        PricingStrategy strategy = new CarPricingStrategy();
+        BillingService billingService = new BillingService(strategy);
+
+        Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.RENTED)
+                .setLicensePlate("ABC-1234")
+                .setYear(2022)
+                .setColor("White")
+                .setFuelType("Petrol")
+                .setTransmission("Automatic")
+                .build();
+
+        Customer customer = new Customer(1, "Test User", "123", "DL1", 25);
+
+        Rental rental = new Rental();
+        rental.setVehicle(vehicle);
+        rental.setCustomer(customer);
+
+        rental.setEndDate(LocalDate.of(2026, 7, 10));
+
+        // Returned one day early -> no penalty
+        LocalDate actualReturnDate = LocalDate.of(2026, 7, 9);
+
+        double penalty = billingService.calculateLatePenalty(rental, actualReturnDate, 10.0);
+
+        assertEquals(0.0, penalty);
+    }
 }

@@ -47,6 +47,8 @@ class VehicleServiceTest {
         
         vehicleService = new VehicleService(vehicleRepository);
     }
+    
+    
 
     @Test
     void testGetAvailableVehicles() {
@@ -54,5 +56,10 @@ class VehicleServiceTest {
         
         assertTrue(vehicleService.getAvailableVehicles().stream()
                 .allMatch(v -> v.getStatus() == VehicleStatus.AVAILABLE));
+    }
+
+    @Test
+    void testGetAllVehicles() {
+        assertEquals(3, vehicleService.getAllVehicles().size());
     }
 }

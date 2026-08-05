@@ -110,6 +110,7 @@ public class RentalService implements Subject {
 
         // 4. إنشاء Rental فقط بعد نجاح كل التحقق
         Rental rental = new Rental();
+        rental.setRentalId(nextRentalId());
         rental.setCustomer(customer);
         rental.setVehicle(vehicle);
         rental.setStartDate(startDate);
@@ -176,5 +177,21 @@ public class RentalService implements Subject {
         notifyObservers("Vehicle returned successfully: " + vehicle.getBrand());
 
         return rental;
-    }    
+    }
+
+    /**
+     * Computes the next available rental identifier by scanning all existing
+     * rentals and incrementing the highest one found.
+     *
+     * @return the next sequential rental identifier
+     */
+    private int nextRentalId() {
+        int maxId = 0;
+        for (Rental rental : rentalRepository.findAll()) {
+            if (rental.getRentalId() > maxId) {
+                maxId = rental.getRentalId();
+            }
+        }
+        return maxId + 1;
+    }
 }

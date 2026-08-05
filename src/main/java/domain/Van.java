@@ -8,8 +8,13 @@ import enums.VehicleStatus;
  */
 public class Van extends Vehicle {
     
+    /** Cargo capacity in litres. */
     private int cargoCapacity;       // سعة الشحن (لتر)
+    
+    /** Passenger capacity. */
     private int passengerCapacity;   // سعة الركاب
+    
+    /** Whether the van has a sliding door. */
     private boolean hasSlidingDoor;  // باب منزلق
     
     /**
@@ -39,27 +44,51 @@ public class Van extends Vehicle {
     }
     
     // Getters
+    /**
+     * @return the cargo capacity in litres
+     */
     public int getCargoCapacity() {
         return cargoCapacity;
     }
     
+    /**
+     * @return the passenger capacity
+     */
     public int getPassengerCapacity() {
         return passengerCapacity;
     }
     
+    /**
+     * @return {@code true} if the van has a sliding door
+     */
     public boolean isHasSlidingDoor() {
         return hasSlidingDoor;
     }
     
     // Setters
+    /**
+     * Sets the cargo capacity.
+     *
+     * @param cargoCapacity the cargo capacity to set
+     */
     public void setCargoCapacity(int cargoCapacity) {
         this.cargoCapacity = cargoCapacity;
     }
     
+    /**
+     * Sets the passenger capacity.
+     *
+     * @param passengerCapacity the passenger capacity to set
+     */
     public void setPassengerCapacity(int passengerCapacity) {
         this.passengerCapacity = passengerCapacity;
     }
     
+    /**
+     * Sets whether the van has a sliding door.
+     *
+     * @param hasSlidingDoor {@code true} if the van has a sliding door
+     */
     public void setHasSlidingDoor(boolean hasSlidingDoor) {
         this.hasSlidingDoor = hasSlidingDoor;
     }

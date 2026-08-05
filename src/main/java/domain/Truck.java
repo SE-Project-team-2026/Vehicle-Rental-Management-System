@@ -9,8 +9,13 @@ import enums.VehicleStatus;
  */
 public class Truck extends Vehicle {
     
+    /** Maximum load capacity in tons. */
     private double maxLoadCapacity;     // أقصى حمولة (طن)
+    
+    /** Whether the truck requires a special license. */
     private boolean requiresSpecialLicense;  // يحتاج رخصة خاصة؟
+    
+    /** Number of axles. */
     private int numberOfAxles;          // عدد المحاور
     
     /**
@@ -40,27 +45,51 @@ public class Truck extends Vehicle {
     }
     
     // Getters
+    /**
+     * @return the maximum load capacity in tons
+     */
     public double getMaxLoadCapacity() {
         return maxLoadCapacity;
     }
     
+    /**
+     * @return {@code true} if the truck requires a special license
+     */
     public boolean isRequiresSpecialLicense() {
         return requiresSpecialLicense;
     }
     
+    /**
+     * @return the number of axles
+     */
     public int getNumberOfAxles() {
         return numberOfAxles;
     }
     
     // Setters
+    /**
+     * Sets the maximum load capacity.
+     *
+     * @param maxLoadCapacity the load capacity to set
+     */
     public void setMaxLoadCapacity(double maxLoadCapacity) {
         this.maxLoadCapacity = maxLoadCapacity;
     }
     
+    /**
+     * Sets whether the truck requires a special license.
+     *
+     * @param requiresSpecialLicense {@code true} if a special license is required
+     */
     public void setRequiresSpecialLicense(boolean requiresSpecialLicense) {
         this.requiresSpecialLicense = requiresSpecialLicense;
     }
     
+    /**
+     * Sets the number of axles.
+     *
+     * @param numberOfAxles the number of axles to set
+     */
     public void setNumberOfAxles(int numberOfAxles) {
         this.numberOfAxles = numberOfAxles;
     }

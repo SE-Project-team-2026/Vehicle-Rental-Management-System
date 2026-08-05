@@ -26,6 +26,7 @@ class RentalTest {
         Rental rental = new Rental();
 
         // 2. تنفيذ العمليات (Act)
+        rental.setRentalId(7);
         rental.setCustomer(customer);
         rental.setVehicle(vehicle);
         rental.setStartDate(LocalDate.now());
@@ -33,6 +34,7 @@ class RentalTest {
         rental.setReturnDate(LocalDate.now().plusDays(3));
 
         // 3. التحقق من النتائج (Assert)
+        assertEquals(7, rental.getRentalId());
         assertEquals(customer, rental.getCustomer());
         assertEquals(vehicle, rental.getVehicle());
         assertNotNull(rental.getStartDate());
@@ -42,5 +44,23 @@ class RentalTest {
         // اختبار إغلاق التأجير
         rental.closeRental();
         assertFalse(rental.isActive());
+    }
+
+    @Test
+    void testParameterizedRentalConstructor() {
+        Customer customer = new Customer(2, "Sara", "456", "DL2", 30);
+        Vehicle vehicle = new Car.CarBuilder(2, "BMW", "X5", 150.0, VehicleStatus.AVAILABLE).build();
+        LocalDate start = LocalDate.of(2026, 8, 1);
+        LocalDate end = LocalDate.of(2026, 8, 5);
+
+        Rental rental = new Rental(3, customer, vehicle, start, end);
+
+        assertEquals(3, rental.getRentalId());
+        assertEquals(customer, rental.getCustomer());
+        assertEquals(vehicle, rental.getVehicle());
+        assertEquals(start, rental.getStartDate());
+        assertEquals(end, rental.getEndDate());
+        assertTrue(rental.isActive());
+        assertNull(rental.getReturnDate());
     }
 }

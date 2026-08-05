@@ -8,7 +8,10 @@ import enums.VehicleStatus;
  */
 public class Motorcycle extends Vehicle {
     
-    private int engineCapacity;  // سعة المحرك 
+    /** Engine capacity in cubic centimetres. */
+    private int engineCapacity;  
+    
+    /** Minimum age required to rent the motorcycle. */
     private int minimumAge;    
     
     /**
@@ -35,19 +38,35 @@ public class Motorcycle extends Vehicle {
     }
     
     // Getters
+    /**
+     * @return the engine capacity in cubic centimetres
+     */
     public int getEngineCapacity() {
         return engineCapacity;
     }
     
+    /**
+     * @return the minimum age required to rent the motorcycle
+     */
     public int getMinimumAge() {
         return minimumAge;
     }
     
     // Setters
+    /**
+     * Sets the engine capacity.
+     *
+     * @param engineCapacity the engine capacity to set
+     */
     public void setEngineCapacity(int engineCapacity) {
         this.engineCapacity = engineCapacity;
     }
     
+    /**
+     * Sets the minimum age requirement.
+     *
+     * @param minimumAge the minimum age to set
+     */
     public void setMinimumAge(int minimumAge) {
         this.minimumAge = minimumAge;
     }

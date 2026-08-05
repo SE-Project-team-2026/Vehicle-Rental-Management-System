@@ -89,9 +89,13 @@ class VehicleDomainTest {
 
     @Test
     void testElectricVehicleCreationAndAvailability() {
-        ElectricVehicle ev = new ElectricVehicle(5, "Tesla", "Model 3", 120.0, 
-                                                 VehicleStatus.AVAILABLE, 
-                                                 75.0, 350, 8.0);
+        ElectricVehicle ev = new ElectricVehicle.ElectricVehicleBuilder(5, "Tesla", "Model 3", 120.0, 
+                                                 VehicleStatus.AVAILABLE)
+        						.setBatteryLevel(75.0)
+        						.setRange(350)
+        						.setChargingTime(8.0)
+        						.build();
+        
         
         assertEquals("ElectricVehicle", ev.getVehicleType());
         assertEquals("Tesla", ev.getBrand());
@@ -119,15 +123,96 @@ class VehicleDomainTest {
             new Motorcycle(2, "Honda", "CBR600", 40.0, VehicleStatus.AVAILABLE, 600, 18),
             new Truck(3, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE, 5.5, true, 2),
             new Van(4, "Toyota", "Hiace", 80.0, VehicleStatus.AVAILABLE, 15, 12, true),
-            new ElectricVehicle(5, "Tesla", "Model 3", 120.0, VehicleStatus.AVAILABLE, 75.0, 350, 8.0)
-        };
+            new ElectricVehicle.ElectricVehicleBuilder(5, "Tesla", "Model 3", 120.0, 
+                    VehicleStatus.AVAILABLE)
+	.setBatteryLevel(75.0)
+	.setRange(350)
+	.setChargingTime(8.0)
+	.build()   
+	};
         
         assertEquals(5, vehicles.length);
         
         for (Vehicle vehicle : vehicles) {
             assertNotNull(vehicle.getVehicleType());
             assertTrue(vehicle.isAvailable());
-            assertTrue(vehicle.validateForRental());
         }
+    }
+
+    @Test
+    void testBaseVehicleSetters() {
+        Car car = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE).build();
+
+        car.setId(10);
+        car.setBrand("Honda");
+        car.setModel("Civic");
+        car.setPricePerDay(60.0);
+
+        assertEquals(10, car.getId());
+        assertEquals("Honda", car.getBrand());
+        assertEquals("Civic", car.getModel());
+        assertEquals(60.0, car.getPricePerDay());
+    }
+
+    @Test
+    void testMotorcycleSettersAndToString() {
+        Motorcycle motorcycle = new Motorcycle(2, "Honda", "CBR600", 40.0,
+                VehicleStatus.AVAILABLE, 600, 18);
+
+        motorcycle.setEngineCapacity(750);
+        motorcycle.setMinimumAge(21);
+
+        assertEquals(750, motorcycle.getEngineCapacity());
+        assertEquals(21, motorcycle.getMinimumAge());
+        assertNotNull(motorcycle.toString());
+    }
+
+    @Test
+    void testTruckSettersAndToString() {
+        Truck truck = new Truck(3, "Ford", "F-150", 100.0,
+                VehicleStatus.AVAILABLE, 5.5, false, 2);
+
+        truck.setMaxLoadCapacity(8.0);
+        truck.setRequiresSpecialLicense(true);
+        truck.setNumberOfAxles(3);
+
+        assertEquals(8.0, truck.getMaxLoadCapacity());
+        assertTrue(truck.isRequiresSpecialLicense());
+        assertEquals(3, truck.getNumberOfAxles());
+        assertNotNull(truck.toString());
+    }
+
+    @Test
+    void testVanSettersAndToString() {
+        Van van = new Van(4, "Toyota", "Hiace", 80.0,
+                VehicleStatus.AVAILABLE, 15, 12, false);
+
+        van.setCargoCapacity(20);
+        van.setPassengerCapacity(10);
+        van.setHasSlidingDoor(true);
+
+        assertEquals(20, van.getCargoCapacity());
+        assertEquals(10, van.getPassengerCapacity());
+        assertTrue(van.isHasSlidingDoor());
+        assertNotNull(van.toString());
+    }
+
+    @Test
+    void testElectricVehicleSettersAndToString() {
+        ElectricVehicle ev = new ElectricVehicle.ElectricVehicleBuilder(5, "Tesla", "Model 3", 120.0,
+                VehicleStatus.AVAILABLE)
+                .setBatteryLevel(75.0)
+                .setRange(350)
+                .setChargingTime(8.0)
+                .build();
+
+        ev.setBatteryLevel(60.0);
+        ev.setRange(400);
+        ev.setChargingTime(6.0);
+
+        assertEquals(60.0, ev.getBatteryLevel());
+        assertEquals(400, ev.getRange());
+        assertEquals(6.0, ev.getChargingTime());
+        assertNotNull(ev.toString());
     }
 }

@@ -117,6 +117,29 @@ class RentalServiceTest {
     }
     
     @Test
+    void testRemoveObserver_NoLongerNotified() {
+        Observer observer = mock(Observer.class);
+        rentalService.addObserver(observer);
+        rentalService.removeObserver(observer);
+
+        Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
+                .setLicensePlate("ABC-1234")
+                .setYear(2022)
+                .setColor("White")
+                .setFuelType("Petrol")
+                .setTransmission("Automatic")
+                .build();
+        vehicleRepository.save(vehicle);
+
+        rentalService.rentVehicle(
+            customer, vehicle,
+            LocalDate.now(), LocalDate.now().plusDays(3)
+        );
+
+        verify(observer, never()).update(anyString());
+    }
+    
+    @Test
     void testInvalidRentalPeriod() {
     	 Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, VehicleStatus.AVAILABLE)
  			 	.setLicensePlate("ABC-1234")
@@ -154,6 +177,30 @@ class RentalServiceTest {
     }
     
     @Test
+    void testRentVehicle_ShouldSucceed_WhenValidationStrategyPasses() {
+        Motorcycle motorcycle = new Motorcycle(2, "Honda", "CBR600", 40.0,
+                VehicleStatus.AVAILABLE, 600, 18);
+        vehicleRepository.save(motorcycle);
+
+        Customer adultCustomer = new Customer(2, "Adult User", "456", "DL2", 20);
+
+        Map<String, RentalValidationStrategy> validationStrategies = new HashMap<>();
+        validationStrategies.put("Motorcycle", new MotorcycleValidationStrategy());
+
+        RentalService rentalServiceWithValidation = new RentalService(
+            rentalRepository, vehicleRepository, validationStrategies
+        );
+
+        Rental rental = rentalServiceWithValidation.rentVehicle(
+            adultCustomer, motorcycle,
+            LocalDate.now(), LocalDate.now().plusDays(2)
+        );
+
+        assertNotNull(rental);
+        assertEquals(VehicleStatus.RENTED, motorcycle.getStatus());
+    }
+
+    @Test
     void testReturnVehicleSuccessfully() {
         Vehicle vehicle = new Car.CarBuilder(1, "Toyota", "Corolla", 50.0, 
                                   VehicleStatus.AVAILABLE)
@@ -181,8 +228,12 @@ class RentalServiceTest {
     
     @Test
     void testRentVehicle_ShouldThrowException_WhenElectricVehicleBatteryLow() {
-        ElectricVehicle ev = new ElectricVehicle(4, "Tesla", "Model 3", 80.0, 
-                                                VehicleStatus.AVAILABLE, 25.0, 350, 8.0);
+        ElectricVehicle ev =new ElectricVehicle.ElectricVehicleBuilder(5, "Tesla", "Model 3", 80.0, 
+                VehicleStatus.AVAILABLE)
+.setBatteryLevel(25.0)
+.setRange(350)
+.setChargingTime(8.0)
+.build();
         vehicleRepository.save(ev);
         
         Map<String, RentalValidationStrategy> validationStrategies = new HashMap<>();
@@ -301,8 +352,12 @@ class RentalServiceTest {
     void testValidate_ShouldReturnTrue_WhenBatteryLevelIsSufficient() {
         ElectricVehicleValidationStrategy strategy = new ElectricVehicleValidationStrategy();
         Customer customer = new Customer(4, "EV User", "012", "DL4", 25); 
-        ElectricVehicle ev = new ElectricVehicle(1, "Tesla", "Model 3", 80.0, 
-                                                 VehicleStatus.AVAILABLE, 75.0, 350, 8.0); 
+        ElectricVehicle ev = new ElectricVehicle.ElectricVehicleBuilder(5, "Tesla", "Model 3", 80.0, 
+                VehicleStatus.AVAILABLE)
+.setBatteryLevel(75.0)
+.setRange(350)
+.setChargingTime(8.0)
+.build();
         boolean isValid = strategy.validate(customer, ev);
         assertTrue(isValid);
     }
@@ -311,8 +366,12 @@ class RentalServiceTest {
     void testValidate_ShouldReturnFalse_WhenBatteryLevelIsLow() {
         ElectricVehicleValidationStrategy strategy = new ElectricVehicleValidationStrategy();
         Customer customer = new Customer(4, "EV User", "012", "DL4", 25); 
-        ElectricVehicle ev = new ElectricVehicle(1, "Tesla", "Model 3", 80.0, 
-                                                 VehicleStatus.AVAILABLE, 25.0, 350, 8.0); 
+        ElectricVehicle ev =new ElectricVehicle.ElectricVehicleBuilder(5, "Tesla", "Model 3", 80.0, 
+                VehicleStatus.AVAILABLE)
+.setBatteryLevel(25.0)
+.setRange(350)
+.setChargingTime(8.0)
+.build();
         boolean isValid = strategy.validate(customer, ev);
         assertFalse(isValid);
     }
