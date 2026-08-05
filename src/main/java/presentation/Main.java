@@ -76,9 +76,12 @@ public class Main {
 
         Motorcycle motorcycle = new Motorcycle(6, "Honda", "CBR600", 40.0,
                 VehicleStatus.AVAILABLE, 600, 18);
-
-        Truck truck = new Truck(7, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE,
-                5.5, true, 2);
+        
+        Truck truck = new Truck.TruckBuilder(7, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE)
+           .setMaxLoadCapacity(5.5)
+           .setRequiresSpecialLicense(true)
+           .setNumberOfAxles(2)
+            .build();
 
         ElectricVehicle ev = new ElectricVehicle.ElectricVehicleBuilder(8, "Tesla", "Model 3", 80.0,
                 VehicleStatus.AVAILABLE)
@@ -87,9 +90,12 @@ public class Main {
                 .setChargingTime(8.0)
                 .build();
 
-        Van van = new Van(9, "Toyota", "Hiace", 80.0, VehicleStatus.AVAILABLE,
-                15, 12, true);
-
+      
+        Van van = new Van.VanBuilder(9, "Toyota", "Hiace", 80.0, VehicleStatus.AVAILABLE)
+		        .setCargoCapacity(15)
+				.setPassengerCapacity(12)
+				.setHasSlidingDoor(true)
+                .build();
         // حفظ المركبات
         vehicleRepository.save(car);
         vehicleRepository.save(motorcycle);

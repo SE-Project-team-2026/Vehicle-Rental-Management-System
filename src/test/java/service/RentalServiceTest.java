@@ -276,8 +276,11 @@ class RentalServiceTest {
     
     @Test
     void testRentVehicle_ShouldThrowException_WhenTruckLicenseValidationFails() {
-        Truck truck = new Truck(3, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE, 
-                               5.5, true, 2);
+        Truck truck = new Truck.TruckBuilder(3, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE)
+        					.setMaxLoadCapacity(5.5)
+			.setRequiresSpecialLicense(true)
+			.setNumberOfAxles(2)
+			.build();
         vehicleRepository.save(truck);
         
         Customer customerWithoutSpecialLicense = new Customer(3, "User", "789", "DL3", 25);
@@ -321,8 +324,11 @@ class RentalServiceTest {
     void testValidate_ShouldReturnTrue_WhenCustomerHasSpecialLicense() {
         TruckValidationStrategy strategy = new TruckValidationStrategy();
         Customer customer = new Customer(3, "Truck User", "789", "SP-3", 25); 
-        Truck truck = new Truck(1, "Ford", "SP-150", 100.0, VehicleStatus.AVAILABLE, 
-                                5.5, true, 2);
+        Truck truck = new Truck.TruckBuilder(1, "Ford", "SP-150", 100.0, VehicleStatus.AVAILABLE)
+        									.setMaxLoadCapacity(5.5)
+								.setRequiresSpecialLicense(true)
+								.setNumberOfAxles(2)
+								.build();
         boolean isValid = strategy.validate(customer, truck);
         assertTrue(isValid);
     }
@@ -331,8 +337,12 @@ class RentalServiceTest {
     void testValidate_ShouldReturnFalse_WhenCustomerDoesNotHaveSpecialLicense() {
         TruckValidationStrategy strategy = new TruckValidationStrategy();
         Customer customer = new Customer(3, "Truck User", "789", "DL3", 25); 
-        Truck truck = new Truck(1, "Ford", "SP-150", 100.0, VehicleStatus.AVAILABLE, 
-                                5.5, true, 2);
+        Truck truck = new Truck.TruckBuilder(1, "Ford", "SP-150", 100.0, VehicleStatus.AVAILABLE)
+        		.setMaxLoadCapacity(5.5)
+        						.setRequiresSpecialLicense(true)
+        						.setNumberOfAxles(2)
+        						.build();
+        
         boolean isValid = strategy.validate(customer, truck);
         assertFalse(isValid);
     }
@@ -342,8 +352,12 @@ class RentalServiceTest {
         TruckValidationStrategy strategy = new TruckValidationStrategy();
         Customer customer = new Customer(3, "Truck User", "789", "DL3", 25); 
         
-        Truck truck = new Truck(1, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE, 
-                                5.5, false, 2); 
+        Truck truck = new Truck.TruckBuilder(1, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE)
+        		.setMaxLoadCapacity(5.5)
+        		.setRequiresSpecialLicense(false)
+        		.setNumberOfAxles(2)
+        		.build();
+        
         boolean isValid = strategy.validate(customer, truck);
         assertTrue(isValid); 
     }

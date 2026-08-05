@@ -53,8 +53,12 @@ class VehicleDomainTest {
 
     @Test
     void testTruckCreationAndAvailability() {
-        Truck truck = new Truck(3, "Ford", "F-150", 100.0, 
-                               VehicleStatus.AVAILABLE, 5.5, true, 2);
+        
+        Truck truck = new Truck.TruckBuilder(3, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE)
+			.setMaxLoadCapacity(5.5)
+			.setRequiresSpecialLicense(true)
+			.setNumberOfAxles(2)
+			.build();
         
         assertEquals("Truck", truck.getVehicleType());
         assertEquals("Ford", truck.getBrand());
@@ -71,8 +75,12 @@ class VehicleDomainTest {
 
     @Test
     void testVanCreationAndAvailability() {
-        Van van = new Van(4, "Toyota", "Hiace", 80.0, 
-                         VehicleStatus.AVAILABLE, 15, 12, true);
+      
+        Van  van = new Van.VanBuilder(4, "Toyota", "Hiace", 80.0, VehicleStatus.AVAILABLE)
+				.setCargoCapacity(15)
+				.setPassengerCapacity(12)
+				.setHasSlidingDoor(true)
+				.build();
         
         assertEquals("Van", van.getVehicleType());
         assertEquals("Toyota", van.getBrand());
@@ -121,8 +129,16 @@ class VehicleDomainTest {
             .setTransmission("Automatic")
             .build(),
             new Motorcycle(2, "Honda", "CBR600", 40.0, VehicleStatus.AVAILABLE, 600, 18),
-            new Truck(3, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE, 5.5, true, 2),
-            new Van(4, "Toyota", "Hiace", 80.0, VehicleStatus.AVAILABLE, 15, 12, true),
+            new Truck.TruckBuilder(3, "Ford", "F-150", 100.0, VehicleStatus.AVAILABLE)
+            .setMaxLoadCapacity(5.5)
+            .setRequiresSpecialLicense(true)
+            .setNumberOfAxles(2)
+            .build(),
+            new Van.VanBuilder(4, "Toyota", "Hiace", 80.0, VehicleStatus.AVAILABLE)
+            .setCargoCapacity(15)
+            .setPassengerCapacity(12)
+            .setHasSlidingDoor(true)
+            .build(),
             new ElectricVehicle.ElectricVehicleBuilder(5, "Tesla", "Model 3", 120.0, 
                     VehicleStatus.AVAILABLE)
 	.setBatteryLevel(75.0)
@@ -169,8 +185,12 @@ class VehicleDomainTest {
 
     @Test
     void testTruckSettersAndToString() {
-        Truck truck = new Truck(3, "Ford", "F-150", 100.0,
-                VehicleStatus.AVAILABLE, 5.5, false, 2);
+        Truck truck = new Truck.TruckBuilder(3, "Ford", "F-150", 100.0,
+                VehicleStatus.AVAILABLE)
+        						.setMaxLoadCapacity(5.5)
+        						.setRequiresSpecialLicense(true)
+        						.setNumberOfAxles(2)
+        						.build();
 
         truck.setMaxLoadCapacity(8.0);
         truck.setRequiresSpecialLicense(true);
@@ -184,8 +204,12 @@ class VehicleDomainTest {
 
     @Test
     void testVanSettersAndToString() {
-        Van van = new Van(4, "Toyota", "Hiace", 80.0,
-                VehicleStatus.AVAILABLE, 15, 12, false);
+        Van van = new Van.VanBuilder(4, "Toyota", "Hiace", 80.0,
+                VehicleStatus.AVAILABLE)
+        						.setCargoCapacity(15)
+        						.setPassengerCapacity(12)
+        						.setHasSlidingDoor(false)
+        						.build();
 
         van.setCargoCapacity(20);
         van.setPassengerCapacity(10);
